@@ -1,40 +1,52 @@
 //Part 1
-var http = require("http");
 
-var requestOptions = {
-  host: "example.com",
-  path: "/",
-  headers: {}
-};
+function printExampleHTML0 (callback) {
 
-function printExampleHTML(callback) {
-  http.get(requestOptions, function (response) {
+  var http = require("http");
+  var requestOptions = {
+    host: "www.example.com",
+    path: "/",
+    headers: {}
+  };
+  var exampleHTML0 = '';
+  http.get(requestOptions, (response) => {
     response.setEncoding("utf8");
     response.on("data", function(data) {
-    console.log("Chunk Received.", data);
+    exampleHTML0 += data
   });
     response.on("end", function() {
-    console.log("Response stream completed.");
+    callback(exampleHTML0);
    });
   });
 };
 
-printExampleHTML();
+printExampleHTML0 (function (exampleHTML0){
+  console.log('function1****\n' + exampleHTML0);
+});
 
 
 
-// //Part 2
-// var request = require("request");
-// const endpoint = "https://example.com";
+//Part 2
+var request = require("request");
+const endpoint = "https://example.com";
+var exampleHTML = '';
 
-// request.get({
-//   url: endpoint,
-//   headers:'',
-//   json: true
-// }, function(err, incomingMessage, responseBody) {
-//   if (err){
-//     console.log(err);
-//     return;
-//   }
-// console.log(responseBody);
-// })
+function printExampleHTML(callback){
+  request.get({
+    url: endpoint,
+    json: true
+    }, function(err, incomingMessage, responseBody) {
+    if (err){
+      console.log(err);
+      return;
+    } else {
+      exampleHTML += responseBody;
+    }
+  callback(exampleHTML);
+  });
+};
+
+printExampleHTML(function (exampleHTML) {
+  console.log('function2****\n' +exampleHTML);
+});
+
